@@ -16,6 +16,7 @@ exports.selectScores = void 0;
 const oracledb_1 = __importDefault(require("oracledb"));
 const environment_1 = require("../environment/environment");
 const query_util_1 = require("../utils/query.util");
+const logger_util_1 = require("../utils/logger.util");
 function openConnection() {
     return __awaiter(this, void 0, void 0, function* () {
         let connection;
@@ -40,7 +41,9 @@ function closeConnection(connection) {
         }
     });
 }
-function selectScores(queryParamUsername) {
+// export async function updateScores(userId: number): Promise<PlayerScores[]> {
+// }
+function selectScores(userId) {
     return __awaiter(this, void 0, void 0, function* () {
         let connection;
         let scores = [];
@@ -49,19 +52,18 @@ function selectScores(queryParamUsername) {
             connection = yield openConnection();
             let query = (0, query_util_1.simpleSQLBuilder)('select', 'C##GAMEDB.PLAYER_SCORES', 't', [
                 'json_serialize(t.data) as DATA'
-            ], [
+            ], [], [], [
                 {
-                    key: 't.data.username',
-                    paramName: 'username',
-                    value: ':username',
+                    key: 't.data.id',
+                    paramName: 'userId',
                     type: '',
                     operator: '=',
-                    condition: queryParamUsername != undefined
+                    condition: userId != undefined
                 }
             ]);
             let bindParams = {};
-            if (queryParamUsername) {
-                bindParams.username = queryParamUsername;
+            if (userId) {
+                bindParams.userId = userId;
             }
             var result = yield connection.execute(query, bindParams, {
                 resultSet: true,
@@ -77,7 +79,7 @@ function selectScores(queryParamUsername) {
             yield rs.close();
         }
         catch (err) {
-            console.error(err);
+            (0, logger_util_1.logMessageSomewhere)(err);
         }
         finally {
             if (connection) {

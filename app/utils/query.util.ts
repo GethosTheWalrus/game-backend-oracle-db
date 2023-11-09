@@ -1,18 +1,20 @@
-import { where } from "../models/query.type";
+import { where, set, insert } from "../models/query.type";
 
 export function simpleSQLBuilder(
     type: string, 
     table: string, 
     tableAlias: string, 
     fields?: string[], 
-    wheres?: where[]
+    sets?: set[],
+    inserts?: string[][],
+    wheres?: where[],
     ): string {
-    let query: string = "";
+    let query: string = '';
 
     switch (type.toLowerCase()) {
         case 'select': {
             let selectFields: string[] = [];
-            // must select at leats 1 field
+            // must select at least 1 field
             if (!fields || fields.length < 1) {
                 break;
             }
@@ -23,8 +25,35 @@ export function simpleSQLBuilder(
             query += selectFields.join(', ') + ' from ' + table + ' ' + tableAlias;
             break;
         }
+        case 'update': {
+            let settableFields: string[] = [];
+            // must update at least 1 field
+            if (!sets || sets.length < 1) {
+                break;
+            }
+            query += 'update ' + table + ' ' + tableAlias + ' set ';
+            sets.forEach( (set) => {
+                settableFields.push( set.key + ' = :' + set.paramName );
+            });
+            query += settableFields.join(', ');
+            break;
+        }
+        case 'insert': {
+            let insertableFields: string[] = [];
+            // must insert into at least 1 field
+            if (!fields || !inserts || fields.length < 1 || inserts.length < 1) {
+                break;
+            }
+            query += 'insert into ' + table + ' ' + tableAlias + ' (' + fields.join(', ') + ') values ';
+            inserts?.forEach( (insert) => {
+                insertableFields.push('(' + insert.join(', ') + ')');
+            });
+            query += insertableFields.join(', ');
+            break;
+        }
         default: {
-            // intentionally left blank
+            // only build queries of a supported type
+            return '';
         }
     }
 

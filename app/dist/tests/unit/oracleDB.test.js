@@ -13,18 +13,32 @@ require("dotenv/config");
 const oracleDB_service_1 = require("../../services/oracleDB.service");
 describe('Oracle DB Service', () => {
     describe('PLAYERSCORES duality view is queried', () => {
-        test('validates that gamer_2 is able to be retrieved from the DB and has 2 scores of value 1 and 16', () => __awaiter(void 0, void 0, void 0, function* () {
-            let players = yield (0, oracleDB_service_1.selectScores)('gamer_2');
-            expect(players.length).toBe(1);
-            let player = players[0];
-            expect(player.username).toBe('gamer_2');
-            let scores = player.scores;
-            expect(scores.length).toBe(2);
-            let firstScore = scores[0];
-            let secondScore = scores[1];
-            console.log(firstScore.value);
-            expect(firstScore.value).toBe(1);
-            expect(secondScore.value).toBe(16);
+        let players;
+        let player;
+        let scores;
+        let firstScore;
+        let secondScore;
+        it('should return a single player with id 6 and set some helper variables', () => __awaiter(void 0, void 0, void 0, function* () {
+            players = yield (0, oracleDB_service_1.selectScores)(6);
+            player = players[0];
+            scores = player.scores;
+            firstScore = scores[0].value;
+            secondScore = scores[1].value;
         }));
+        test('only 1 player was retrieved by the query', () => {
+            expect(players.length).toBe(1);
+        });
+        test('gamer_2 is the username of the retrieved user', () => {
+            expect(player.username).toBe('gamer_2');
+        });
+        test('retrieved user has 2 scores', () => {
+            expect(scores.length).toBe(2);
+        });
+        test('first score value is 1', () => {
+            expect(firstScore).toBe(1);
+        });
+        test('second score value is 16', () => {
+            expect(secondScore).toBe(16);
+        });
     });
 });

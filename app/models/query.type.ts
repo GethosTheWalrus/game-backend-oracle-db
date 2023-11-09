@@ -1,8 +1,16 @@
 export type where = {
     key: string, 
     paramName: string, 
-    value: string, 
     type: string, 
     operator: string, 
     condition: boolean
+}
+
+export type set = {
+    key: string,
+    paramName: string,
+}
+
+export type insert = {
+    value: unknown
 }

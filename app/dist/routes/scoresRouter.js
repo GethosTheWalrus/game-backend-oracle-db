@@ -21,10 +21,17 @@ exports.scoresRouter.use(function timeLog(req, res, next) {
     res.set('Content-Type', 'application/json; charset=utf-8');
     next();
 });
-exports.scoresRouter.get('/', function (req, res) {
+exports.scoresRouter.get('/users', function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        let queryParamUsername = req.query.username;
-        let scores = yield (0, oracleDB_service_1.selectScores)(queryParamUsername);
+        let scores = yield (0, oracleDB_service_1.selectScores)();
+        res.send(scores);
+    });
+});
+exports.scoresRouter.get('/users/:user', function (req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let userId = req.params.user;
+        let userIdNumber = parseInt(userId) || -1;
+        let scores = yield (0, oracleDB_service_1.selectScores)(userIdNumber);
         res.send(scores);
     });
 });

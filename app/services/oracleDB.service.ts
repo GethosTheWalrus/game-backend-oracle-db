@@ -2,6 +2,7 @@ import oracledb from 'oracledb';
 import { DB_USER, DB_PASSWORD, DB_ADDRESS, DB_PORT, DB_SERVICE } from '../environment/environment';
 import { PlayerScores } from '../models/scores.type';
 import { simpleSQLBuilder } from '../utils/query.util';
+import { logMessageSomewhere } from '../utils/logger.util';
 
 async function openConnection(): Promise<oracledb.Connection> {
     let connection;
@@ -22,7 +23,11 @@ async function closeConnection(connection: oracledb.Connection) {
     }
 }
 
-export async function selectScores(queryParamUsername?: string): Promise<PlayerScores[]> {
+// export async function updateScores(userId: number): Promise<PlayerScores[]> {
+
+// }
+
+export async function selectScores(userId?: number): Promise<PlayerScores[]> {
     let connection;
     let scores: PlayerScores[] = [];
     try {
@@ -35,21 +40,23 @@ export async function selectScores(queryParamUsername?: string): Promise<PlayerS
             [
                 'json_serialize(t.data) as DATA' 
             ], 
+            [],
+            [],
             [
                 {
-                    key: 't.data.username', 
-                    paramName: 'username', 
-                    value: ':username', 
+                    key: 't.data.id', 
+                    paramName: 'userId', 
                     type: '', 
                     operator: '=', 
-                    condition: queryParamUsername != undefined
+                    condition: userId != undefined
                 }
             ]
         );
-        let bindParams: { username?: string } = {};
+        
+        let bindParams: { userId?: number } = {};
 
-        if (queryParamUsername) {
-            bindParams.username = queryParamUsername;
+        if (userId) {
+            bindParams.userId = userId
         }
 
         var result = await connection.execute( 
@@ -74,7 +81,7 @@ export async function selectScores(queryParamUsername?: string): Promise<PlayerS
         }
         await rs!.close();
     } catch (err) {
-        console.error(err);
+        logMessageSomewhere(err);
     } finally {
         if (connection) {
             closeConnection(connection);

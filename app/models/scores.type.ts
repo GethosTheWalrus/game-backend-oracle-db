@@ -1,7 +1,7 @@
 export type PlayerScores = {
     _metadata: PlayerScoresMetadata;
     username: string;
-    id: Number;
+    id: number;
     scores: PlayerScoresValue[];
 };
 
@@ -11,6 +11,6 @@ type PlayerScoresMetadata = {
 }
 
 type PlayerScoresValue = {
-    id: Number;
-    value: Number;
+    id: number;
+    value: number;
 }
