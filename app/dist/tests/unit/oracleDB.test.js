@@ -19,7 +19,7 @@ describe('Oracle DB Service', () => {
         let firstScore;
         let secondScore;
         it('should return a single player with id 6 and set some helper variables', () => __awaiter(void 0, void 0, void 0, function* () {
-            players = yield (0, oracleDB_service_1.selectScores)(6);
+            players = yield (0, oracleDB_service_1.getScoresForUsers)(6);
             player = players[0];
             scores = player.scores;
             firstScore = scores[0].value;

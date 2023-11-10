@@ -1,16 +1,16 @@
 import 'dotenv/config';
-import { PlayerScores } from "../../models/scores.type";
-import { selectScores } from "../../services/oracleDB.service";
+import { Player } from "../../models/scores.type";
+import { getScoresForUsers } from "../../services/oracleDB.service";
 
 describe('Oracle DB Service', () => {
     describe('PLAYERSCORES duality view is queried', () => {
-        let players: PlayerScores[];
-        let player: PlayerScores;
+        let players: Player[];
+        let player: Player;
         let scores;
         let firstScore: number;
         let secondScore: number;
         it('should return a single player with id 6 and set some helper variables', async () => {
-            players  = await selectScores(6);
+            players  = await getScoresForUsers(6);
             player = players[0];
             scores = player.scores;
             firstScore = scores[0].value;

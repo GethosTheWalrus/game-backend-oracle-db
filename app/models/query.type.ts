@@ -10,7 +10,3 @@ export type set = {
     key: string,
     paramName: string,
 }
-
-export type insert = {
-    value: unknown
-}

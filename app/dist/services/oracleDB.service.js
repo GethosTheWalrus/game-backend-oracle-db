@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.selectScores = void 0;
+exports.getScoresForUsers = exports.insertNewScoreForUser = void 0;
 const oracledb_1 = __importDefault(require("oracledb"));
 const environment_1 = require("../environment/environment");
 const query_util_1 = require("../utils/query.util");
@@ -41,9 +41,40 @@ function closeConnection(connection) {
         }
     });
 }
-// export async function updateScores(userId: number): Promise<PlayerScores[]> {
-// }
-function selectScores(userId) {
+function insertNewScoreForUser(userId, score) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let connection;
+        try {
+            connection = yield openConnection();
+            let query = (0, query_util_1.simpleSQLBuilder)('insert', 'C##GAMEDB.SCORES', 't', [
+                'value',
+                'user_id'
+            ], [], [
+                ['score', 'userId']
+            ], []);
+            let bindParams = {};
+            if (userId && score) {
+                bindParams.userId = userId;
+                bindParams.score = score;
+            }
+            yield connection.execute(query, bindParams, {
+                resultSet: true,
+                outFormat: oracledb_1.default.OUT_FORMAT_OBJECT,
+                autoCommit: true
+            });
+        }
+        catch (err) {
+            (0, logger_util_1.logMessageSomewhere)(err);
+        }
+        finally {
+            if (connection) {
+                closeConnection(connection);
+            }
+        }
+    });
+}
+exports.insertNewScoreForUser = insertNewScoreForUser;
+function getScoresForUsers(userId) {
     return __awaiter(this, void 0, void 0, function* () {
         let connection;
         let scores = [];
@@ -89,4 +120,4 @@ function selectScores(userId) {
         }
     });
 }
-exports.selectScores = selectScores;
+exports.getScoresForUsers = getScoresForUsers;

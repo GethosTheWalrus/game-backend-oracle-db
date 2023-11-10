@@ -38,7 +38,7 @@ function simpleSQLBuilder(type, table, tableAlias, fields, sets, inserts, wheres
             }
             query += 'insert into ' + table + ' ' + tableAlias + ' (' + fields.join(', ') + ') values ';
             inserts === null || inserts === void 0 ? void 0 : inserts.forEach((insert) => {
-                insertableFields.push('(' + insert.join(', ') + ')');
+                insertableFields.push('(' + insert.map(e => `:${e}`).join(', ') + ')');
             });
             query += insertableFields.join(', ');
             break;

@@ -1,5 +1,7 @@
+// process.env
 export const DB_ADDRESS: string = process.env.ORACLEDB_ADDRESS || 'localhost';
 export const DB_PORT: string = process.env.ORACLEDB_PORT || '1521';
 export const DB_USER: string = process.env.ORACLEDB_USER || 'sys';
 export const DB_PASSWORD: string = process.env.ORACLEDB_PASSWORD || 'password';
 export const DB_SERVICE: string = process.env.ORACLEDB_SERVICE || 'FREE';
+export const ROOT_URL: string = process.env.SITEURL || 'localhost:3000';

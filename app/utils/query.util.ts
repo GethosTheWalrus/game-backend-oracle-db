@@ -1,4 +1,4 @@
-import { where, set, insert } from "../models/query.type";
+import { where, set } from "../models/query.type";
 
 export function simpleSQLBuilder(
     type: string, 
@@ -46,7 +46,7 @@ export function simpleSQLBuilder(
             }
             query += 'insert into ' + table + ' ' + tableAlias + ' (' + fields.join(', ') + ') values ';
             inserts?.forEach( (insert) => {
-                insertableFields.push('(' + insert.join(', ') + ')');
+                insertableFields.push('(' + insert.map(e => `:${e}`).join(', ') + ')');
             });
             query += insertableFields.join(', ');
             break;

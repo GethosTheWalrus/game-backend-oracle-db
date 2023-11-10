@@ -23,7 +23,7 @@ exports.scoresRouter.use(function timeLog(req, res, next) {
 });
 exports.scoresRouter.get('/users', function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        let scores = yield (0, oracleDB_service_1.selectScores)();
+        let scores = yield (0, oracleDB_service_1.getScoresForUsers)();
         res.send(scores);
     });
 });
@@ -31,7 +31,14 @@ exports.scoresRouter.get('/users/:user', function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let userId = req.params.user;
         let userIdNumber = parseInt(userId) || -1;
-        let scores = yield (0, oracleDB_service_1.selectScores)(userIdNumber);
+        let scores = yield (0, oracleDB_service_1.getScoresForUsers)(userIdNumber);
         res.send(scores);
     });
 });
+exports.scoresRouter.post('/users/:user/scores'), function (req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let userId = req.params.user;
+        let userIdNumber = parseInt(userId) || -1;
+        let newScores = req.body;
+    });
+};
