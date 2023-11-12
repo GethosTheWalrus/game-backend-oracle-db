@@ -1,0 +1,40 @@
+<!DOCTYPE html>  
+<html style="margin:0;margin-top:100px;">
+
+<head> 
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Flappy Bhatt </title>
+    <script type="text/javascript" src="phaser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tensorflow/0.15.0/tf.min.js"></script>
+
+    <!-- Game Object js files -->
+    <script src="./Objects/GameObject.js"></script>
+    <script src="./Objects/GameGroup.js"></script>
+    <!-- Child Game Objects -->
+    <script src="./Objects/Bird.js"></script>
+    <script src="./Objects/Pipe.js"></script>
+
+    <!-- Scene js files -->
+    <script src="./Scenes/Menu.js"></script>
+    <script src="./Scenes/Main.js"></script>
+
+    <!-- Main game js file -->
+    <script type="text/javascript" src="main.js"></script>
+
+    <style>
+        input[type=radio] {
+            margin-right: 25px;
+            margin-left: 10px;
+        }
+    </style>
+    
+</head>
+
+<body style="margin:0;text-align:center;"> 
+    <div id="highScore"></div>
+    <div id="playerSelector"></div>
+</body>  
+
+</html>  
