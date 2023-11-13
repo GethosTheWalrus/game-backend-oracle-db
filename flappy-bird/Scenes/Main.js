@@ -6,7 +6,7 @@ class Main extends Phaser.Scene {
 
         this.load.image('hole', 'assets/blank.png');
         this.load.image('pipe', 'assets/pipe.png');
-        this.load.image('bhatt', 'assets/bhatt.png');
+        this.load.image('bird', 'assets/bird.png');
         this.load.image('background', 'assets/background.png');
         this.load.image('ground', 'assets/ground.png');
 
@@ -26,7 +26,7 @@ class Main extends Phaser.Scene {
         this.ground.setOrigin(0, 0);
         this.ground.body.immovable = true;
 
-        this.bird = new Bird(this, 'bhatt', 100, 245);
+        this.bird = new Bird(this, 'bird', 100, 245);
 
         // Create an empty group
         // this.pipes = this.physics.add.group(); 

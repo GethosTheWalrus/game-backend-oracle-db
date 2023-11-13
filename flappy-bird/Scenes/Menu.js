@@ -7,7 +7,7 @@ class Menu extends Phaser.Scene {
         this.highScore = null;
         this.highScoreUser = null;
         this.players = [];
-        this.load.image('bhatt', 'assets/bhatt.png');
+        this.load.image('bird', 'assets/bird.png');
         this.load.image('background', 'assets/background.png');
         this.load.image('ground', 'assets/ground.png');
 
@@ -39,10 +39,13 @@ class Menu extends Phaser.Scene {
         this.ground.setOrigin(0, 0);
 
         // Display the bird at the position x=100 and y=245
-        this.bird = this.physics.add.sprite(100, 245, 'bhatt');
+        this.bird = this.physics.add.sprite(100, 245, 'bird');
+        this.bird.displayWidth = 70;
+        this.bird.displayHeight = 55;
+        this.bird.body.setSize(55, 70);
         this.bird.setOrigin(-0.2, 0.5);
         this.bird.alive = true;
-        this.bird.body.setCircle(28);
+        this.bird.body.setCircle(400, 300, 60);
 
         var style = { font: "bold 32px Arial", fill: "#fff", align: "center" };
         var text = "Press 'space'\nor tap screen to\nstart flapping";
