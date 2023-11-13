@@ -13,11 +13,12 @@ class Menu extends Phaser.Scene {
 
         // get players from the server
         let playerSelector = document.querySelector('#playerSelector');
-        if (playerSelector.childNodes.length < 2) {
-            console.log('getting players');
-            let playersPromise = await fetch('http://localhost:3000/users');
-            playerSelector.innerHTML = '';
-            playersPromise.json().then( (data) => {
+        console.log('getting players');
+        let playersPromise = await fetch('http://localhost:3000/users');
+        playersPromise.json().then( (data) => {
+            this.players = data;
+            if (playerSelector.childNodes.length < 2) {
+                playerSelector.innerHTML = '';
                 self.players = data;
                 data.forEach( (item) => {
                     let playerOption = document.createElement('option');
@@ -25,11 +26,11 @@ class Menu extends Phaser.Scene {
                     playerOption.innerHTML = item.username;
                     playerSelector.appendChild(playerOption);
                 });
-                if (self.selectedPlayer) {
-                    document.querySelector('select[id="playerSelector"]').setAttribute('value', self.selectedPlayer);
-                }
-            });
-        }
+            }
+            if (self.selectedPlayer) {
+                document.querySelector('select[id="playerSelector"]').setAttribute('value', self.selectedPlayer);
+            }
+        });
     }
 
     create() {
@@ -87,7 +88,7 @@ class Menu extends Phaser.Scene {
         }
 
         // show the high score
-        if (!this.highScore && !this.searchedForScore && this.players.length > 0) {
+        if (!this.searchedForScore && this.players.length > 0) {
             console.log('finding high score...');
             this.searchedForScore = true;
             this.players.forEach( (player) => {

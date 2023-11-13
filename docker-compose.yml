@@ -1,5 +1,6 @@
 version: "3.9"
 services:
+  # Oracle database container
   oracle:
     image: container-registry.oracle.com/database/free:latest
     environment:
@@ -8,6 +9,7 @@ services:
       - '1521:1521'
     volumes:
       - oracledb:/opt/oracle/oradata
+  # Node.js backend application container
   node:
     build: ./app/
     image: node-app
@@ -18,6 +20,19 @@ services:
     volumes:
       - ./app:/usr/app/
       - ./app/node_modules:/usr/app/node_modules
+    networks:
+      - demoNetwork
+  # Nginx frontend container
+  #Nginx Service
+  webserver:
+    image: nginx:alpine
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./flappy-bird:/usr/share/nginx/html
+    ports:
+      - "8080:80"
     networks:
       - demoNetwork
 
