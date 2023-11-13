@@ -60,7 +60,7 @@ class Bird extends GameObject {
             }
         ];
 
-        let selectedPlayer = document.querySelector('input[name="players"]:checked').value;
+        let selectedPlayer = document.querySelector('select[id="playerSelector"]').value;
         fetch('http://localhost:3000/users/'+selectedPlayer+'/scores', {
             method: 'POST',
             headers: {

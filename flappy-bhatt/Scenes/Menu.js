@@ -3,30 +3,28 @@ class Menu extends Phaser.Scene {
     async preload() {
         let self = this;
         this.selectedPlayer = null;
+        this.searchedForScore = false;
         this.highScore = null;
+        this.highScoreUser = null;
         this.players = [];
         this.load.image('bhatt', 'assets/bhatt.png');
         this.load.image('background', 'assets/background.png');
         this.load.image('ground', 'assets/ground.png');
 
         // get players from the server
-        let playerSelector = document.getElementById('playerSelector');
+        let playerSelector = document.querySelector('#playerSelector');
         let playersPromise = await fetch('http://localhost:3000/users');
         playerSelector.innerHTML = '';
         playersPromise.json().then( (data) => {
             self.players = data;
             data.forEach( (item) => {
-                let playerLabel = document.createElement('label');
-                playerLabel.innerHTML = item.username
-                let playerRadio = document.createElement('input');
-                playerRadio.setAttribute('type', 'radio');
-                playerRadio.setAttribute('name', 'players');
-                playerRadio.setAttribute('value', item.id);
-                playerSelector.appendChild(playerLabel);
-                playerSelector.appendChild(playerRadio);
+                let playerOption = document.createElement('option');
+                playerOption.setAttribute('value', item.id);
+                playerOption.innerHTML = item.username;
+                playerSelector.appendChild(playerOption);
             });
             if (self.selectedPlayer) {
-                document.querySelector('input[name="players"][value="'+self.selectedPlayer+'"]').setAttribute('checked', 'true');
+                document.querySelector('select[id="playerSelector"]').setAttribute('value', self.selectedPlayer);
             }
         });
     }
@@ -82,16 +80,25 @@ class Menu extends Phaser.Scene {
         }
 
         // show the high score
-        if (!this.highScore) {
+        if (!this.highScore && !this.searchedForScore && this.players.length > 0) {
+            console.log('finding high score...');
+            this.searchedForScore = true;
             this.players.forEach( (player) => {
                 player.scores.forEach( (score) => {
-                    this.highScore = Math.max(score.value, this.highScore);
+                    if (this.highScore < score.value) {
+                        this.highScore = score.value;
+                        this.highScoreUser = player.username;
+                    }
+                    // this.highScore = Math.max(score.value, this.highScore);
                 });
             });
             if (this.highScore) {
                 let style = { font: "bold 32px Arial", fill: "#fff", align: "center" };
+                let subStyle = { font: "bold 16px Arial", fill: "#fff", align: "center" };
                 let text = "High Score: " + this.highScore;
+                let subText = this.highScoreUser + ' is #1 on the leaderboard';
                 this.labelMenu = this.add.text(75, 385, text, style);
+                this.labelMenu = this.add.text(75, 420, subText, subStyle);
             }
         }
 

@@ -28,13 +28,37 @@
             margin-right: 25px;
             margin-left: 10px;
         }
+        select {
+            width: 300px;
+        }
+        button {
+            width: 100px;
+            border-radius: 7px;
+        }
     </style>
+
+    <script type="text/javascript">
+        function addUser() {
+            let username = prompt("Please enter your username", "");
+            let text;
+            if (username == null || username == "") {
+                text = "User cancelled the prompt.";
+            } else {
+                text = "You enterred: " + username;
+            }
+            alert(text);
+        }
+    </script>
     
 </head>
 
 <body style="margin:0;text-align:center;"> 
     <div id="highScore"></div>
-    <div id="playerSelector"></div>
+    <div id="playerSelectorContainer">
+        <select id="playerSelector">
+        </select>
+        <button id="addUser" onclick="addUser();">New User</button>
+    </div>
 </body>  
 
 </html>  
