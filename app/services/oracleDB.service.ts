@@ -3,6 +3,7 @@ import { DB_USER, DB_PASSWORD, DB_ADDRESS, DB_PORT, DB_SERVICE } from '../enviro
 import { Player } from '../models/scores.type';
 import { simpleSQLBuilder } from '../utils/query.util';
 import { logMessageSomewhere } from '../utils/logger.util';
+import OracleDB from 'oracledb';
 
 async function openConnection(): Promise<oracledb.Connection> {
     let connection;
@@ -23,10 +24,53 @@ async function closeConnection(connection: oracledb.Connection) {
     }
 }
 
+export async function insertNewUser(username: string): Promise<number> {
+    let connection;
+    let newUserId: number = -1;
+    try {
+        connection = await openConnection();
+
+        let newUser: Player = { "username" : username };
+
+        /* insert JSON document directly into DB via the duality view */
+        let query: string  = `insert into C##GAMEDB.PLAYER_SCORES t (data) values(:jsonStringifiedPlayer) RETURNING json_value(data, '$.id') INTO :newUserId`;
+
+        console.log(query);
+
+        let bindParams = {
+            jsonStringifiedPlayer: JSON.stringify(newUser),
+            newUserId:  { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },
+        };
+
+        console.log(bindParams);
+
+        // perform the insert
+        let result: OracleDB.Result<{newUserId: number[]}> = await connection.execute(
+            query, 
+            bindParams, 
+            {
+                resultSet: true, 
+                outFormat: oracledb.OUT_FORMAT_OBJECT,
+                autoCommit: true
+            }
+        );
+        newUserId = result.outBinds!.newUserId[0];
+    } catch(err) {
+        logMessageSomewhere(err);
+    } finally {
+        if (connection) {
+            closeConnection(connection);
+        }
+        return newUserId;
+    }
+}
+
 export async function insertNewScoreForUser(userId: number, score: number) {
     let connection;
     try {
         connection = await openConnection();
+
+        /* insert into C##GAMEDB.SCORES t (value, user_id) values (:score, :userid) */
         let query: string  = simpleSQLBuilder(
             'insert', 
             'C##GAMEDB.SCORES', 
@@ -69,10 +113,11 @@ export async function insertNewScoreForUser(userId: number, score: number) {
 
 export async function getScoresForUsers(userId?: number): Promise<Player[]> {
     let connection;
-    let scores: Player[] = [];
+    let players: Player[] = [];
     try {
-        // connect
         connection = await openConnection();
+
+        /* select json_serialize(t.data) as DATA from C##GAMEDB.PLAYER_SCORES t (where t.data.id = :userid)? */
         let query: string = simpleSQLBuilder(
             'select', 
             'C##GAMEDB.PLAYER_SCORES', 
@@ -113,7 +158,7 @@ export async function getScoresForUsers(userId?: number): Promise<Player[]> {
         let row;
         while ((row = await rs!.getRow())) {
             let resultObject: { DATA?: string } = row as Object
-            scores.push(
+            players.push(
                 JSON.parse(
                     resultObject.DATA as string
                 ) as Player
@@ -126,6 +171,6 @@ export async function getScoresForUsers(userId?: number): Promise<Player[]> {
         if (connection) {
             closeConnection(connection);
         }
-        return scores;
+        return players;
     }
 }

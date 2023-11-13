@@ -60,10 +60,10 @@ describe('Simple SQL Builder', () => {
             ], 
             [],
             [
-                ['100', '4']
+                ['score', 'userid']
             ],
             []
         );
-        expect(query).toBe('insert into C##GAMEDB.SCORES t (value, user_id) values (100, 4)');
+        expect(query).toBe('insert into C##GAMEDB.SCORES t (value, user_id) values (:score, :userid)');
     });
 });

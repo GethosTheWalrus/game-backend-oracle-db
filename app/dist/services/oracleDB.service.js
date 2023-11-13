@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getScoresForUsers = exports.insertNewScoreForUser = void 0;
+exports.getScoresForUsers = exports.insertNewScoreForUser = exports.insertNewUser = void 0;
 const oracledb_1 = __importDefault(require("oracledb"));
 const environment_1 = require("../environment/environment");
 const query_util_1 = require("../utils/query.util");
@@ -41,11 +41,47 @@ function closeConnection(connection) {
         }
     });
 }
+function insertNewUser(username) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let connection;
+        let newUserId = -1;
+        try {
+            connection = yield openConnection();
+            let newUser = { "username": username };
+            /* insert JSON document directly into DB via the duality view */
+            let query = `insert into C##GAMEDB.PLAYER_SCORES t (data) values(:jsonStringifiedPlayer) RETURNING json_value(data, '$.id') INTO :newUserId`;
+            console.log(query);
+            let bindParams = {
+                jsonStringifiedPlayer: JSON.stringify(newUser),
+                newUserId: { dir: oracledb_1.default.BIND_OUT, type: oracledb_1.default.NUMBER },
+            };
+            console.log(bindParams);
+            // perform the insert
+            let result = yield connection.execute(query, bindParams, {
+                resultSet: true,
+                outFormat: oracledb_1.default.OUT_FORMAT_OBJECT,
+                autoCommit: true
+            });
+            newUserId = result.outBinds.newUserId[0];
+        }
+        catch (err) {
+            (0, logger_util_1.logMessageSomewhere)(err);
+        }
+        finally {
+            if (connection) {
+                closeConnection(connection);
+            }
+            return newUserId;
+        }
+    });
+}
+exports.insertNewUser = insertNewUser;
 function insertNewScoreForUser(userId, score) {
     return __awaiter(this, void 0, void 0, function* () {
         let connection;
         try {
             connection = yield openConnection();
+            /* insert into C##GAMEDB.SCORES t (value, user_id) values (:score, :userid) */
             let query = (0, query_util_1.simpleSQLBuilder)('insert', 'C##GAMEDB.SCORES', 't', [
                 'value',
                 'user_id'
@@ -77,10 +113,10 @@ exports.insertNewScoreForUser = insertNewScoreForUser;
 function getScoresForUsers(userId) {
     return __awaiter(this, void 0, void 0, function* () {
         let connection;
-        let scores = [];
+        let players = [];
         try {
-            // connect
             connection = yield openConnection();
+            /* select json_serialize(t.data) as DATA from C##GAMEDB.PLAYER_SCORES t (where t.data.id = :userid)? */
             let query = (0, query_util_1.simpleSQLBuilder)('select', 'C##GAMEDB.PLAYER_SCORES', 't', [
                 'json_serialize(t.data) as DATA'
             ], [], [], [
@@ -105,7 +141,7 @@ function getScoresForUsers(userId) {
             let row;
             while ((row = yield rs.getRow())) {
                 let resultObject = row;
-                scores.push(JSON.parse(resultObject.DATA));
+                players.push(JSON.parse(resultObject.DATA));
             }
             yield rs.close();
         }
@@ -116,7 +152,7 @@ function getScoresForUsers(userId) {
             if (connection) {
                 closeConnection(connection);
             }
-            return scores;
+            return players;
         }
     });
 }

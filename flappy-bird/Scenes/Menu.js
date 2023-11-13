@@ -45,7 +45,8 @@ class Menu extends Phaser.Scene {
         this.bird.body.setSize(55, 70);
         this.bird.setOrigin(-0.2, 0.5);
         this.bird.alive = true;
-        this.bird.body.setCircle(400, 300, 60);
+        // this.bird.body.setCircle(400, 300, 60);
+        this.bird.body.setCircle(28);
 
         var style = { font: "bold 32px Arial", fill: "#fff", align: "center" };
         var text = "Press 'space'\nor tap screen to\nstart flapping";

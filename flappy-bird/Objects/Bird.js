@@ -15,7 +15,8 @@ class Bird extends GameObject {
         this.sprite.displayWidth = 70;
         this.sprite.displayHeight = 55
         this.sprite.body.setSize(55, 70);
-        this.sprite.body.setCircle(400, 300, 60);
+        // this.sprite.body.setCircle(400, 300, 60);
+        this.sprite.body.setCircle(28);
 
         this.spaceKey = game.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         game.input.on('pointerdown', function (pointer) { this.jump(); }, this);

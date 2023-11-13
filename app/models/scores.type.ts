@@ -1,8 +1,8 @@
 export type Player = {
-    _metadata: PlayerScoresMetadata;
+    _metadata?: PlayerScoresMetadata;
     username: string;
-    id: number;
-    scores: PlayerScoresValue[];
+    id?: number;
+    scores?: PlayerScoresValue[];
 };
 
 export type PlayerScoresValue = {
