@@ -13,20 +13,23 @@ class Menu extends Phaser.Scene {
 
         // get players from the server
         let playerSelector = document.querySelector('#playerSelector');
-        let playersPromise = await fetch('http://localhost:3000/users');
-        playerSelector.innerHTML = '';
-        playersPromise.json().then( (data) => {
-            self.players = data;
-            data.forEach( (item) => {
-                let playerOption = document.createElement('option');
-                playerOption.setAttribute('value', item.id);
-                playerOption.innerHTML = item.username;
-                playerSelector.appendChild(playerOption);
+        if (playerSelector.childNodes.length < 2) {
+            console.log('getting players');
+            let playersPromise = await fetch('http://localhost:3000/users');
+            playerSelector.innerHTML = '';
+            playersPromise.json().then( (data) => {
+                self.players = data;
+                data.forEach( (item) => {
+                    let playerOption = document.createElement('option');
+                    playerOption.setAttribute('value', item.id);
+                    playerOption.innerHTML = item.username;
+                    playerSelector.appendChild(playerOption);
+                });
+                if (self.selectedPlayer) {
+                    document.querySelector('select[id="playerSelector"]').setAttribute('value', self.selectedPlayer);
+                }
             });
-            if (self.selectedPlayer) {
-                document.querySelector('select[id="playerSelector"]').setAttribute('value', self.selectedPlayer);
-            }
-        });
+        }
     }
 
     create() {
