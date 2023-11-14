@@ -6,10 +6,12 @@ First run:
 docker-compose up
 ```
 Then:
-1. Create a schema called C##GAMEDB
-2. Assign the proper privileges to your schema user
-3. Run the 3 SQL scripts from the root of the repository
-4. Navigate to http://localhost:8080
+
+Navigate to http://localhost:8080 to see the Flappy Bird game
+
+or
+
+Start making API requests to http://localhost:3000
 
 ## Starting Over
 Messed up? Need to start over? Just remove all containers and the Oracle DB volume and start from the beginning.
