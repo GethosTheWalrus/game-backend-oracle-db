@@ -1,5 +1,6 @@
 FROM node:20.8.1-alpine
 WORKDIR /usr/app
-COPY package.json .
-RUN npm install --quiet
-COPY . .
+COPY . /usr/app
+RUN npm i
+RUN npm run build
+CMD npm start

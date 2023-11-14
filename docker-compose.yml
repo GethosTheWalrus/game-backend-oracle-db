@@ -5,30 +5,41 @@ services:
     image: container-registry.oracle.com/database/free:latest
     environment:
       - ORACLE_ALLOW_REMOTE=true
+      - ORACLE_PWD=password
     ports: 
       - '1521:1521'
     volumes:
       - oracledb:/opt/oracle/oradata
+      - ./database-scripts:/opt/oracle/scripts/startup
+    networks:
+      - demoNetwork
   # Node.js backend application container
   node:
     build: ./app/
     image: node-app
+    environment:
+      - ORACLEDB_ADDRESS=oracle
+      - ORACLEDB_PORT=1521
+      - ORACLEDB_SERVICE=FREEPDB1
+      - ORACLEDB_USER=GAMEDB
+      - DB_PASSWORD=password
+      - SITEURL=localhost:3000
     container_name: node_app
     ports:
       - 3000:3000
-    command: node index.js
-    volumes:
-      - ./app:/usr/app/
-      - ./app/node_modules:/usr/app/node_modules
+    depends_on:
+      - oracle
     networks:
       - demoNetwork
   # Nginx frontend container
-  #Nginx Service
   webserver:
     image: nginx:alpine
     container_name: webserver
     restart: unless-stopped
     tty: true
+    depends_on:
+      - oracle
+      - node
     volumes:
       - ./flappy-bird:/usr/share/nginx/html
     ports:

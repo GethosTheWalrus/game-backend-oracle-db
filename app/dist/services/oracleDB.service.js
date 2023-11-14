@@ -130,6 +130,8 @@ function getScoresForUsers(userId) {
             if (userId) {
                 bindParams.userId = userId;
             }
+            console.log(query);
+            console.log(bindParams);
             var result = yield connection.execute(query, bindParams, {
                 resultSet: true,
                 outFormat: oracledb_1.default.OUT_FORMAT_OBJECT

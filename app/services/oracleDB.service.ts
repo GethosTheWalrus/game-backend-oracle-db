@@ -33,7 +33,7 @@ export async function insertNewUser(username: string): Promise<number> {
         let newUser: Player = { "username" : username };
 
         /* insert JSON document directly into DB via the duality view */
-        let query: string  = `insert into C##GAMEDB.PLAYER_SCORES t (data) values(:jsonStringifiedPlayer) RETURNING json_value(data, '$.id') INTO :newUserId`;
+        let query: string  = `insert into GAMEDB.PLAYER_SCORES t (data) values(:jsonStringifiedPlayer) RETURNING json_value(data, '$.id') INTO :newUserId`;
 
         let bindParams = {
             jsonStringifiedPlayer: JSON.stringify(newUser),
@@ -66,10 +66,10 @@ export async function insertNewScoreForUser(userId: number, score: number) {
     try {
         connection = await openConnection();
 
-        /* insert into C##GAMEDB.SCORES t (value, user_id) values (:score, :userid) */
+        /* insert into GAMEDB.SCORES t (value, user_id) values (:score, :userid) */
         let query: string  = simpleSQLBuilder(
             'insert', 
-            'C##GAMEDB.SCORES', 
+            'GAMEDB.SCORES', 
             't',
             [
                 'value',
@@ -113,10 +113,10 @@ export async function getScoresForUsers(userId?: number): Promise<Player[]> {
     try {
         connection = await openConnection();
 
-        /* select json_serialize(t.data) as DATA from C##GAMEDB.PLAYER_SCORES t (where t.data.id = :userid)? */
+        /* select json_serialize(t.data) as DATA from GAMEDB.PLAYER_SCORES t (where t.data.id = :userid)? */
         let query: string = simpleSQLBuilder(
             'select', 
-            'C##GAMEDB.PLAYER_SCORES', 
+            'GAMEDB.PLAYER_SCORES', 
             't',
             [
                 'json_serialize(t.data) as DATA' 
@@ -139,6 +139,9 @@ export async function getScoresForUsers(userId?: number): Promise<Player[]> {
         if (userId) {
             bindParams.userId = userId;
         }
+
+        console.log(query);
+        console.log(bindParams);
 
         var result = await connection.execute( 
             query, 

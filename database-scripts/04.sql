@@ -1,3 +1,4 @@
+ALTER SESSION SET CONTAINER=FREEPDB1;
 --------------------------------------------------------
 --  File created - Monday-November-13-2023   
 --------------------------------------------------------
@@ -5,7 +6,7 @@
 --  DDL for View PLAYER_SCORES
 --------------------------------------------------------
 
-  CREATE OR REPLACE FORCE EDITIONABLE JSON RELATIONAL DUALITY VIEW "C##GAMEDB"."PLAYER_SCORES"  AS 
+  CREATE OR REPLACE FORCE EDITIONABLE JSON RELATIONAL DUALITY VIEW "GAMEDB"."PLAYER_SCORES"  AS 
   select json {'username' : u.USERNAME,
              'id'   : u.ID,
              'scores' :
