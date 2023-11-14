@@ -3,7 +3,7 @@ This repository contains a 3 part application stack. The front end is a Flappy B
 ## Quick Start
 First run:
 ```
-docker-compose up --build --force-recreate -d
+docker-compose up
 ```
 Then:
 1. Create a schema called C##GAMEDB
