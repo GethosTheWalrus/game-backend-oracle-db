@@ -35,14 +35,10 @@ export async function insertNewUser(username: string): Promise<number> {
         /* insert JSON document directly into DB via the duality view */
         let query: string  = `insert into C##GAMEDB.PLAYER_SCORES t (data) values(:jsonStringifiedPlayer) RETURNING json_value(data, '$.id') INTO :newUserId`;
 
-        console.log(query);
-
         let bindParams = {
             jsonStringifiedPlayer: JSON.stringify(newUser),
             newUserId:  { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },
         };
-
-        console.log(bindParams);
 
         // perform the insert
         let result: OracleDB.Result<{newUserId: number[]}> = await connection.execute(

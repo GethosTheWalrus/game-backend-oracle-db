@@ -50,12 +50,10 @@ function insertNewUser(username) {
             let newUser = { "username": username };
             /* insert JSON document directly into DB via the duality view */
             let query = `insert into C##GAMEDB.PLAYER_SCORES t (data) values(:jsonStringifiedPlayer) RETURNING json_value(data, '$.id') INTO :newUserId`;
-            console.log(query);
             let bindParams = {
                 jsonStringifiedPlayer: JSON.stringify(newUser),
                 newUserId: { dir: oracledb_1.default.BIND_OUT, type: oracledb_1.default.NUMBER },
             };
-            console.log(bindParams);
             // perform the insert
             let result = yield connection.execute(query, bindParams, {
                 resultSet: true,
