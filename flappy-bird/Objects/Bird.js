@@ -36,7 +36,7 @@ class Bird extends GameObject {
 
         // Call the 'jump' function when the spacekey is hit
         if (Phaser.Input.Keyboard.JustDown(this.spaceKey))
-        this.jump();
+            this.jump();
 
         // bounds checking
         if (this.sprite.y < 0 || this.sprite.y > 490)

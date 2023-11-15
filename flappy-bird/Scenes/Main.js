@@ -41,12 +41,9 @@ class Main extends Phaser.Scene {
         score = 0;
         this.labelScore = this.add.text(20, 20, "0", { font: "30px Arial", fill: "#ffffff" });
 
-        // Add collisions to the bird
-        this.bird.addCollider(this.ground);
-
-        this.bird.addOverlap(this.pipes.objects, this.bird.hitPipe)
-        this.bird.addOverlap(this.pipes.holes, this.bird.passThroughHole)
-        this.bird.addOverlap(this.ground, this.gameOver, this)
+        this.bird.addOverlap(this.pipes.objects, this.bird.hitPipe);
+        this.bird.addOverlap(this.pipes.holes, this.bird.passThroughHole);
+        this.bird.addOverlap(this.ground, this.bird.hitPipe);
 
         this.menuInit = false;
     }
@@ -86,7 +83,7 @@ class Main extends Phaser.Scene {
             self = this;
             setTimeout(function() {
 
-            self.goToMenu(); 
+                self.goToMenu(); 
 
             }, 2000);
         }
