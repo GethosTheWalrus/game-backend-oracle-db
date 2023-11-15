@@ -140,9 +140,6 @@ export async function getScoresForUsers(userId?: number): Promise<Player[]> {
             bindParams.userId = userId;
         }
 
-        console.log(query);
-        console.log(bindParams);
-
         var result = await connection.execute( 
             query, 
             bindParams, 
