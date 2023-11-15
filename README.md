@@ -17,6 +17,6 @@ Start making API requests to http://localhost:3000
 Messed up? Need to start over? Just remove all containers and the Oracle DB volume and start from the beginning.
 ```
 docker rm -rf $(docker ps -aq) &&
-docker volume rm oracledb_oracledb &&
+docker volume rm game-backend-oracle-db_oracledb &&
 docker-compose up
 ```
