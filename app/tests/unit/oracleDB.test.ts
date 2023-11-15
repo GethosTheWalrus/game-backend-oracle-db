@@ -9,16 +9,16 @@ describe('Oracle DB Service', () => {
         let scores: PlayerScoresValue[] = [];
         let firstScore: number;
         let secondScore: number;
-        it('should return a single player with id 6 and set some helper variables', async () => {
-            players  = await getScoresForUsers(6);
+        it('should return a single player with id 1 and set some helper variables', async () => {
+            players  = await getScoresForUsers(1);
             player = players[0];
         });
 
         test('only 1 player was retrieved by the query', () => {
             expect(players.length).toBe(1);
         });
-        test('gamer_2 is the username of the retrieved user', () => {
-            expect(player.username).toBe('gamer_2');
+        test('BigBird is the username of the retrieved user', () => {
+            expect(player.username).toBe('BigBird');
         });
     });
 });

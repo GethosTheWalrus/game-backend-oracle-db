@@ -39,7 +39,7 @@ class Main extends Phaser.Scene {
 
         // score and label for the score
         score = 0;
-        this.labelScore = this.add.text(20, 20, "0", { font: "30px Arial", fill: "#ffffff" });
+        this.labelScore = this.add.text(20, 20, "0", { font: "30px Arial", fill: "#ffffff" }); 
 
         this.bird.addOverlap(this.pipes.objects, this.bird.hitPipe);
         this.bird.addOverlap(this.pipes.holes, this.bird.passThroughHole);
