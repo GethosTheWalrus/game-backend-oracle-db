@@ -49,7 +49,7 @@ function insertNewUser(username) {
             connection = yield openConnection();
             let newUser = { "username": username };
             /* insert JSON document directly into DB via the duality view */
-            let query = `insert into C##GAMEDB.PLAYER_SCORES t (data) values(:jsonStringifiedPlayer) RETURNING json_value(data, '$.id') INTO :newUserId`;
+            let query = `insert into GAMEDB.PLAYER_SCORES t (data) values(:jsonStringifiedPlayer) RETURNING json_value(data, '$.id') INTO :newUserId`;
             let bindParams = {
                 jsonStringifiedPlayer: JSON.stringify(newUser),
                 newUserId: { dir: oracledb_1.default.BIND_OUT, type: oracledb_1.default.NUMBER },
@@ -79,8 +79,8 @@ function insertNewScoreForUser(userId, score) {
         let connection;
         try {
             connection = yield openConnection();
-            /* insert into C##GAMEDB.SCORES t (value, user_id) values (:score, :userid) */
-            let query = (0, query_util_1.simpleSQLBuilder)('insert', 'C##GAMEDB.SCORES', 't', [
+            /* insert into GAMEDB.SCORES t (value, user_id) values (:score, :userid) */
+            let query = (0, query_util_1.simpleSQLBuilder)('insert', 'GAMEDB.SCORES', 't', [
                 'value',
                 'user_id'
             ], [], [
@@ -114,8 +114,8 @@ function getScoresForUsers(userId) {
         let players = [];
         try {
             connection = yield openConnection();
-            /* select json_serialize(t.data) as DATA from C##GAMEDB.PLAYER_SCORES t (where t.data.id = :userid)? */
-            let query = (0, query_util_1.simpleSQLBuilder)('select', 'C##GAMEDB.PLAYER_SCORES', 't', [
+            /* select json_serialize(t.data) as DATA from GAMEDB.PLAYER_SCORES t (where t.data.id = :userid)? */
+            let query = (0, query_util_1.simpleSQLBuilder)('select', 'GAMEDB.PLAYER_SCORES', 't', [
                 'json_serialize(t.data) as DATA'
             ], [], [], [
                 {
@@ -130,8 +130,6 @@ function getScoresForUsers(userId) {
             if (userId) {
                 bindParams.userId = userId;
             }
-            console.log(query);
-            console.log(bindParams);
             var result = yield connection.execute(query, bindParams, {
                 resultSet: true,
                 outFormat: oracledb_1.default.OUT_FORMAT_OBJECT

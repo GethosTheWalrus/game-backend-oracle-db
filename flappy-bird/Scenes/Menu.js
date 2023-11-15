@@ -56,28 +56,14 @@ class Menu extends Phaser.Scene {
         var text = "Press 'space'\nor tap screen to\nstart flapping";
         this.labelMenu = this.add.text(75, 50, text, style);
 
-        this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-
-        this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-
-        this.input.on('pointerdown', function (pointer) {
-
-            if (this.selectedPlayer) {
-                this.startGame();
-            } else {
-                console.log('Must select a player');
-            }
-    
-        }, this);
-
         this.trillBird();
     }
 
     update() {
         this.background.tilePositionX += .5;
 
-        if (document.querySelector('input[name="players"]:checked')) {
-            this.selectedPlayer = document.querySelector('input[name="players"]:checked').value;
+        if (document.querySelector('#playerSelector').childNodes.length > 0) {
+            this.selectedPlayer = document.querySelector('#playerSelector').value;
         }
 
         if( score > 0 && this.labelMenu.text == '' ) {
@@ -110,6 +96,12 @@ class Menu extends Phaser.Scene {
             }
         }
 
+        this.input.on('pointerdown', function (pointer) {
+
+            this.startGame();
+    
+        }, this);
+
         var spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         if (Phaser.Input.Keyboard.JustDown(spacebar)) {
 
@@ -137,6 +129,10 @@ class Menu extends Phaser.Scene {
     }
 
     startGame() {
-        this.scene.start('Main')
+        if (this.selectedPlayer) {
+            this.scene.start('Main')
+        } else {
+            console.log('Must select a player');
+        }
     }
 }
