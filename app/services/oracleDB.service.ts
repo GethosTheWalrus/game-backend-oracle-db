@@ -1,28 +1,10 @@
 import oracledb from 'oracledb';
-import { DB_USER, DB_PASSWORD, DB_ADDRESS, DB_PORT, DB_SERVICE } from '../environment/environment';
+import OracleDB from 'oracledb';
 import { Player } from '../models/scores.type';
 import { simpleSQLBuilder } from '../utils/query.util';
 import { logMessageSomewhere } from '../utils/logger.util';
-import OracleDB from 'oracledb';
+import { openConnection, closeConnection } from '../utils/oracleDB.util';
 
-async function openConnection(): Promise<oracledb.Connection> {
-    let connection;
-    try {
-        connection = await oracledb.getConnection({ user: DB_USER, password: DB_PASSWORD, connectionString: DB_ADDRESS+":"+DB_PORT+"/"+DB_SERVICE });
-    } catch (err) {
-        console.error(err);
-    } finally {
-        return connection as oracledb.Connection;
-    }
-}
-
-async function closeConnection(connection: oracledb.Connection) {
-    try {
-        await connection.close();
-    } catch (err) {
-        console.error(err);
-    }
-}
 
 export async function insertNewUser(username: string): Promise<number> {
     let connection;

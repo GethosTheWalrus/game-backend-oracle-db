@@ -18,15 +18,15 @@ describe('Oracle DB Service', () => {
         let scores = [];
         let firstScore;
         let secondScore;
-        it('should return a single player with id 6 and set some helper variables', () => __awaiter(void 0, void 0, void 0, function* () {
-            players = yield (0, oracleDB_service_1.getScoresForUsers)(6);
+        it('should return a single player with id 1 and set some helper variables', () => __awaiter(void 0, void 0, void 0, function* () {
+            players = yield (0, oracleDB_service_1.getScoresForUsers)(1);
             player = players[0];
         }));
         test('only 1 player was retrieved by the query', () => {
             expect(players.length).toBe(1);
         });
-        test('gamer_2 is the username of the retrieved user', () => {
-            expect(player.username).toBe('gamer_2');
+        test('BigBird is the username of the retrieved user', () => {
+            expect(player.username).toBe('BigBird');
         });
     });
 });
