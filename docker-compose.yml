@@ -24,7 +24,6 @@ services:
       - ORACLEDB_USER=GAMEDB
       - DB_PASSWORD=password
       - SITEURL=localhost:3000
-      - QUEUE_NAME=GAMEDB.GAME_CHAT_QUEUE
     container_name: node_app
     ports:
       - 3000:3000
