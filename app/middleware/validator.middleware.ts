@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { validateScoresPostRoute } from '../utils/validator.util';
+import { validateScoresPostRoute, validateChatMessagePostRoute } from '../utils/validator.util';
 import { httpError } from '../models/error.type';
 import { Validation } from '../models/validation.type';
 
@@ -17,6 +17,9 @@ export function validateEndpointInput(req: Request, res: Response, next: NextFun
         if ( new RegExp('^\/users\/\\d+\/scores$').test(endpoint) ) {
             validationResult = validateScoresPostRoute(req.body);
         } else if ( new RegExp('^\/users\/\\d+\/$').test(endpoint) ) {
+            // add new user validation here
+        } else if ( new RegExp('^\/chat\/\\d+\/$').test(endpoint) ) {
+            validationResult = validateChatMessagePostRoute(req.body);
         }
     }
     

@@ -19,18 +19,20 @@ playersRouter.route('/chat')
         let dequeuedMessage: ChatMessage = await dequeueOne();
         res.send(dequeuedMessage);
     })
+    /*
+     * Accept a new chat message from a user
+     * output: ChatMessage
+    */
     .post( async (req: Request, res: Response) => {
-        let newMessage: ChatMessage = { user: "BigBird", messageText: "Hi" };
+        let newMessage: ChatMessage = req.body;
         let enqueuedMessage: ChatMessage = await enqueueOne(newMessage);
-        res.send(enqueuedMessage);
+        res.status(202).send(enqueuedMessage);
     });
 
-/* View all registerred users
- * output: Player[]
-*/
 playersRouter.route('/users')
     /* 
      * List all registerred users
+     * output: Player[]
     */
     .get( async (req: Request, res: Response) => {
         let scores = await getScoresForUsers();
