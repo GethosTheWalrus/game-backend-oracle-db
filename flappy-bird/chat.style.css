@@ -36,7 +36,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  max-height: 100px;
+  max-height: 150px;
   width: 375px;
   margin: 0 auto;
 }
