@@ -27,7 +27,7 @@ export function validateScoresPostRoute(requestBody: PlayerScoresValue[]): Valid
 export function validateChatMessagePostRoute(requestBody: ChatMessage): Validation {
     let message = '';
 
-    if (!requestBody.messageText || !requestBody.user || requestBody.messageText.length < 1 || requestBody.user.length < 1) {
+    if (!requestBody.user || !requestBody.messageText || requestBody.messageText.length < 1 || requestBody.user.length < 1) {
         message = 'Malformed input';
         logMessageSomewhere(message);
         return { success: false, message: message };

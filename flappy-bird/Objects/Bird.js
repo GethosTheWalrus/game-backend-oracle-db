@@ -3,6 +3,8 @@ class Bird extends GameObject {
     constructor(game, texture, x, y) {
         super(game, texture, x, y);
 
+        this.game = game;
+
         // sprite properties
         this.sprite.setOrigin(-0.2, 0.5);
         this.sprite.body.setCircle(28);
@@ -17,9 +19,6 @@ class Bird extends GameObject {
         this.sprite.body.setSize(55, 70);
         // this.sprite.body.setCircle(400, 300, 60);
         this.sprite.body.setCircle(28);
-
-        this.spaceKey = game.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        game.input.on('pointerdown', function (pointer) { this.jump(); }, this);
     }
 
     // inherited functions
@@ -34,9 +33,12 @@ class Bird extends GameObject {
     update() {
         super.update();
 
-        // Call the 'jump' function when the spacekey is hit
-        if (Phaser.Input.Keyboard.JustDown(this.spaceKey))
-            this.jump();
+        // this.spaceKey = this.game.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.game.input.on('pointerdown', function (pointer) { this.jump(); }, this);
+
+        // // Call the 'jump' function when the spacekey is hit
+        // if (Phaser.Input.Keyboard.JustDown(this.spaceKey))
+        //     this.jump();
 
         // bounds checking
         if (this.sprite.y < 0 || this.sprite.y > 490)

@@ -18,7 +18,7 @@ export function validateEndpointInput(req: Request, res: Response, next: NextFun
             validationResult = validateScoresPostRoute(req.body);
         } else if ( new RegExp('^\/users\/\\d+\/$').test(endpoint) ) {
             // add new user validation here
-        } else if ( new RegExp('^\/chat\/\\d+\/$').test(endpoint) ) {
+        } else if ( new RegExp('^\/chat$').test(endpoint) ) {
             validationResult = validateChatMessagePostRoute(req.body);
         }
     }

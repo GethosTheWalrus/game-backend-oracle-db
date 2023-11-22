@@ -46,41 +46,66 @@ export async function enqueueOne(message: ChatMessage) {
     }
 }
 
-export async function dequeueOne(): Promise<ChatMessage> {
+export async function dequeueOne(): Promise<ChatMessage[]> {
     let connection;
-    let dequeuedMessage: ChatMessage = { user: '', messageText: '' };
+    let dequeuedMessages: ChatMessage[] = [];
     try {
         connection = await openConnection();
-
-        /* invoke our PLSQL function to dequeue a message from our AQ */
-        let query: string  = 
-        `DECLARE
-            returnValue varchar2(32767);
-        BEGIN
-            :returnValue := GAMEDB.DEQUEUEMESSAGE();
-        END;`;
-
-        let bindParams = {
-            returnValue:  { dir: oracledb.BIND_OUT, type: oracledb.STRING },
-        };
-
-        // execute the query above
-        let result: OracleDB.Result<{returnValue: ChatMessage}> = await connection.execute(
-            query, 
-            bindParams, 
-            {
-                resultSet: true, 
-                outFormat: oracledb.OUT_FORMAT_OBJECT,
-                autoCommit: true
-            }
-        );
-        dequeuedMessage = result.outBinds!.returnValue;
+        let dequeuedMessage: ChatMessage = await performDequeue(connection);
+        if (dequeuedMessage.user && dequeuedMessage.messageText) 
+            dequeuedMessages.push( dequeuedMessage );
     } catch(e) {
         logMessageSomewhere(e);
     } finally {
         if (connection) {
             closeConnection(connection);
         }
-        return dequeuedMessage
+        return dequeuedMessages
     }
+}
+
+export async function dequeueMany(numMessages: number): Promise<ChatMessage[]> {
+    let connection;
+    let dequeuedMessages: ChatMessage[] = [];
+    try {
+        connection = await openConnection();
+        for (let i=0; i < numMessages; i++) {
+            let dequeuedMessage: ChatMessage = await performDequeue(connection);
+            if (dequeuedMessage.user && dequeuedMessage.messageText) 
+                dequeuedMessages.push( dequeuedMessage );
+        }
+    } catch(e) {
+        logMessageSomewhere(e);
+    } finally {
+        if (connection) {
+            closeConnection(connection);
+        }
+        return dequeuedMessages
+    }
+}
+
+async function performDequeue(connection: OracleDB.Connection): Promise<ChatMessage> {
+    /* invoke our PLSQL function to dequeue a message from our AQ */
+    let query: string  = 
+    `DECLARE
+        returnValue varchar2(32767);
+    BEGIN
+        :returnValue := GAMEDB.DEQUEUEMESSAGE();
+    END;`;
+
+    let bindParams = {
+        returnValue:  { dir: oracledb.BIND_OUT, type: oracledb.STRING },
+    };
+
+    // execute the query above
+    let result: OracleDB.Result<{returnValue: string}> = await connection.execute(
+        query, 
+        bindParams, 
+        {
+            resultSet: true, 
+            outFormat: oracledb.OUT_FORMAT_OBJECT,
+            autoCommit: true
+        }
+    );
+    return JSON.parse(result.outBinds!.returnValue);
 }

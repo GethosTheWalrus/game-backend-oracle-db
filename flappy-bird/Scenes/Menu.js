@@ -53,7 +53,7 @@ class Menu extends Phaser.Scene {
         this.bird.body.setCircle(28);
 
         var style = { font: "bold 32px Arial", fill: "#fff", align: "center" };
-        var text = "Press 'space'\nor tap screen to\nstart flapping";
+        var text = "Click or tap the\nscreen to\nstart flapping";
         this.labelMenu = this.add.text(75, 50, text, style);
 
         this.trillBird();
@@ -68,7 +68,7 @@ class Menu extends Phaser.Scene {
 
         if( score > 0 && this.labelMenu.text == '' ) {
 
-            var text = "Your score was\n" + score + "\nPress 'space'\n or tap screen\nto try again";
+            var text = "Your score was\n" + score + "\nClick or tap the\nscreen\nto try again";
             this.labelMenu.setText(text);
 
         }
@@ -96,18 +96,15 @@ class Menu extends Phaser.Scene {
             }
         }
 
+        
         this.input.on('pointerdown', function (pointer) {
-
             this.startGame();
-    
         }, this);
 
-        var spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        if (Phaser.Input.Keyboard.JustDown(spacebar)) {
-
-            this.startGame();
-
-        }
+        // this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        // if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
+        //     this.startGame();
+        // }
     }
 
     trillBird() {
