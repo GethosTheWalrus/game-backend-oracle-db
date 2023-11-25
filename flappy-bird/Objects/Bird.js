@@ -61,13 +61,17 @@ class Bird extends GameObject {
         // stop pipes from spawning
         this.game.time.removeAllEvents;
 
+        let selectedPlayer = document.querySelector('select[id="playerSelector"]').value;
+
         let scoreDatabaseEntry = [
             {
                 "value": score
             }
         ];
 
-        let selectedPlayer = document.querySelector('select[id="playerSelector"]').value;
+        let message = { user: selectedPlayer, messageText: 'Just scored ' + score + ' points!', type: 'scoreUpdate' }
+        socket.emit('chat', message);
+
         fetch('http://localhost:3000/users/'+selectedPlayer+'/scores', {
             method: 'POST',
             headers: {

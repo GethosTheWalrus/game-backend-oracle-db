@@ -13,7 +13,7 @@ import { CHAT_POLL_INTERVAL, CHAT_POLL_MESSAGE_COUNT } from '../environment/envi
 export class ServerService {  
     static app = express();
     static server = require('http').createServer(this.app);
-    static io  = ServerService.initServer(ServerService.server);
+    static io = ServerService.initServer(ServerService.server);
 
     /*
      * Initialize the web socket listener.

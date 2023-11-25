@@ -4,6 +4,7 @@
   --primary-color: #4caf50;
   --secondary-color: #5cd561;
   --receiving-color: #3a4ce9;
+  --satus-color: transparent;
   --background-color: #1d1e22;
   --disabled-color: #2a622d;
   --text-color: #fff;
@@ -53,7 +54,6 @@ body {
   border-radius: var(--message-radius);
   display: block;
   white-space: pre-wrap;
-  position: relative;
   transition: var(--transition-duration);
   transition-property: opacity, margin;
   max-width: 350px;
@@ -62,8 +62,15 @@ body {
 
 .msg-panel .received {
   background-color: var(--receiving-color) !important;
-  white-space: normal !important;
-  opacity: 0;
+}
+
+.msg-panel .status {
+  background-color: var(--satus-color) !important;
+  /* opacity: 0.5 !important; */
+  margin-bottom: 5px;
+  margin-top: 2px !important;
+  font-size: 8px !important;
+  padding: 0 !important;
 }
 
 .msg-panel .msg-label {

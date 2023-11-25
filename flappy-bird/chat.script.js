@@ -86,10 +86,6 @@ function clearChat() {
 }
 
 socket.on('chat', (message) => {
-  console.log(socket.id, message.socketId);
-  if (socket.id == message.socketId) {
-    return;
-  }
   const date = new Date();
   const msgPanel = document.querySelector('.msg-panel');
   const msg = document.createElement('div');
@@ -108,8 +104,18 @@ socket.on('chat', (message) => {
   msgLabel = document.createElement('div');
   msgLabel.innerHTML = message.user + ' (' + message.socketId + ')' + ' - ' + dateString + ' at ' + timeString;
   msgLabel.classList.add('msg-label');
+
+  if (message.type == 'scoreUpdate') {
+    msg.classList.remove('received');
+    msg.classList.add('status');
+    msgLabel.style.marginTop = '12px';
+  } else if (socket.id == message.socketId) {
+    return;
+  } 
+
   msgPanel.appendChild(msgLabel);
   msgPanel.appendChild(msg);
+
   setTimeout(() => {
     msg.style.marginTop = '7px';
     msg.style.opacity = 1;

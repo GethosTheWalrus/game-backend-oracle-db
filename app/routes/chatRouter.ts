@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import express from 'express';
 import { ChatMessage } from '../models/message.type';
-import { dequeueOne, enqueueOne } from '../services/oracleQueue.service';
+import { enqueueOne } from '../services/oracleQueue.service';
 import { validateEndpointInput } from '../middleware/validator.middleware';
 
 export const chatRouter = express.Router();
