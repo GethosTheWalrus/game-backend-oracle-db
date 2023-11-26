@@ -3,6 +3,7 @@ services:
   # Oracle database container
   oracle:
     image: container-registry.oracle.com/database/free:latest
+    restart: unless-stopped
     environment:
       - ORACLE_ALLOW_REMOTE=true
       - ORACLE_PWD=password
@@ -11,6 +12,9 @@ services:
     volumes:
       - oracledb:/opt/oracle/oradata
       - ./database-scripts:/opt/oracle/scripts/startup
+    healthcheck:
+      test: [ "CMD", "/opt/oracle/checkDBStatus.sh"]
+      interval: 10s
     networks:
       - demoNetwork
   # Node.js backend application container
@@ -24,13 +28,15 @@ services:
       - ORACLEDB_USER=GAMEDB
       - DB_PASSWORD=password
       - SITEURL=localhost:3000
-      - CHAT_POLL_INTERVAL=1000
+      - CHAT_POLL_INTERVAL=5000
       - CHAT_POLL_MESSAGE_COUNT=5
+    restart: unless-stopped
     container_name: node_app
     ports:
       - 3000:3000
     depends_on:
-      - oracle
+      oracle:
+        condition: service_healthy
     networks:
       - demoNetwork
   # Nginx frontend container

@@ -9,11 +9,13 @@ import { getScoresForUsers } from './oracleDB.service';
 import { playersRouter } from '../routes/playersRouter';
 import { dequeueMany } from '../services/oracleQueue.service';
 import { CHAT_POLL_INTERVAL, CHAT_POLL_MESSAGE_COUNT } from '../environment/environment';
+import { checkDBHealth } from '../utils/oracleDB.util';
 
 export class ServerService {  
     static app = express();
     static server = require('http').createServer(this.app);
     static io = ServerService.initServer(ServerService.server);
+    static healthy: boolean = false;
 
     /*
      * Initialize the web socket listener.
@@ -70,6 +72,10 @@ export class ServerService {
     // start a background task to poll for new chat messages
     static startBackgroundChatPollProcess() {
         setInterval( async () => {
+            if ( !this.healthy ) {
+                this.healthy = await checkDBHealth();
+                return
+            }
             // dequeue our messages
             let batchOfMessages = await dequeueMany(CHAT_POLL_MESSAGE_COUNT);
             // broadcast the messages to our connected clients
