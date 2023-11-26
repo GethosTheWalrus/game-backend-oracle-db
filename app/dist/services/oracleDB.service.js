@@ -14,39 +14,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getScoresForUsers = exports.insertNewScoreForUser = exports.insertNewUser = void 0;
 const oracledb_1 = __importDefault(require("oracledb"));
-const environment_1 = require("../environment/environment");
 const query_util_1 = require("../utils/query.util");
 const logger_util_1 = require("../utils/logger.util");
-function openConnection() {
-    return __awaiter(this, void 0, void 0, function* () {
-        let connection;
-        try {
-            connection = yield oracledb_1.default.getConnection({ user: environment_1.DB_USER, password: environment_1.DB_PASSWORD, connectionString: environment_1.DB_ADDRESS + ":" + environment_1.DB_PORT + "/" + environment_1.DB_SERVICE });
-        }
-        catch (err) {
-            console.error(err);
-        }
-        finally {
-            return connection;
-        }
-    });
-}
-function closeConnection(connection) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            yield connection.close();
-        }
-        catch (err) {
-            console.error(err);
-        }
-    });
-}
+const oracleDB_util_1 = require("../utils/oracleDB.util");
 function insertNewUser(username) {
     return __awaiter(this, void 0, void 0, function* () {
         let connection;
         let newUserId = -1;
         try {
-            connection = yield openConnection();
+            connection = yield (0, oracleDB_util_1.openConnection)();
             let newUser = { "username": username };
             /* insert JSON document directly into DB via the duality view */
             let query = `insert into GAMEDB.PLAYER_SCORES t (data) values(:jsonStringifiedPlayer) RETURNING json_value(data, '$.id') INTO :newUserId`;
@@ -67,7 +43,7 @@ function insertNewUser(username) {
         }
         finally {
             if (connection) {
-                closeConnection(connection);
+                (0, oracleDB_util_1.closeConnection)(connection);
             }
             return newUserId;
         }
@@ -78,7 +54,7 @@ function insertNewScoreForUser(userId, score) {
     return __awaiter(this, void 0, void 0, function* () {
         let connection;
         try {
-            connection = yield openConnection();
+            connection = yield (0, oracleDB_util_1.openConnection)();
             /* insert into GAMEDB.SCORES t (value, user_id) values (:score, :userid) */
             let query = (0, query_util_1.simpleSQLBuilder)('insert', 'GAMEDB.SCORES', 't', [
                 'value',
@@ -102,7 +78,7 @@ function insertNewScoreForUser(userId, score) {
         }
         finally {
             if (connection) {
-                closeConnection(connection);
+                (0, oracleDB_util_1.closeConnection)(connection);
             }
         }
     });
@@ -113,7 +89,7 @@ function getScoresForUsers(userId) {
         let connection;
         let players = [];
         try {
-            connection = yield openConnection();
+            connection = yield (0, oracleDB_util_1.openConnection)();
             /* select json_serialize(t.data) as DATA from GAMEDB.PLAYER_SCORES t (where t.data.id = :userid)? */
             let query = (0, query_util_1.simpleSQLBuilder)('select', 'GAMEDB.PLAYER_SCORES', 't', [
                 'json_serialize(t.data) as DATA'
@@ -148,7 +124,7 @@ function getScoresForUsers(userId) {
         }
         finally {
             if (connection) {
-                closeConnection(connection);
+                (0, oracleDB_util_1.closeConnection)(connection);
             }
             return players;
         }

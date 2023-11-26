@@ -1,14 +1,8 @@
 import 'dotenv/config';
-import cors from 'cors';
-import bodyparser from 'body-parser';
-import express from 'express';
-import { playersRouter } from './routes/playersRouter'
+import { ServerService } from './services/server.service';
 
-const app = express();
-const server = require('http').createServer(app);
+// Start the background process to poll for chat messages
+ServerService.startBackgroundChatPollProcess()
 
-app.use(bodyparser.json());
-app.use(cors());
-app.use(playersRouter);
-
-server.listen(3000);
+// Start the HTTP and web socket servers
+ServerService.startServer();

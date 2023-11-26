@@ -20,3 +20,9 @@ docker rm -rf $(docker ps -aq) &&
 docker volume rm game-backend-oracle-db_oracledb &&
 docker-compose up
 ```
+
+## Readings
+If you're interested in reading an article corresponding to a particular topic, consier visiting the URLs below. Each link points to an article written by me, demonstrating how to use the corresponding feature:
+
+* [JSON-relational duality views](https://www.linkedin.com/pulse/full-stack-javascript-app-utilizing-json-relational-duality-toscano-ffjde)
+* [Advanced Queuing](https://www.linkedin.com/pulse/express-typescript-oracle-advanced-queue-michael-toscano-bmrje)

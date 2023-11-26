@@ -1,3 +1,4 @@
+import { ChatMessage } from '../models/message.type';
 import { PlayerScoresValue } from '../models/scores.type';
 import { Validation } from '../models/validation.type';
 import { logMessageSomewhere } from './logger.util';
@@ -21,4 +22,16 @@ export function validateScoresPostRoute(requestBody: PlayerScoresValue[]): Valid
     });
 
     return { success: validationResult, message: message };
+}
+
+export function validateChatMessagePostRoute(requestBody: ChatMessage): Validation {
+    let message = '';
+
+    if (!requestBody.user || !requestBody.messageText || requestBody.messageText.length < 1 || requestBody.user.length < 1) {
+        message = 'Malformed input';
+        logMessageSomewhere(message);
+        return { success: false, message: message };
+    }
+
+    return { success: true, message: message };
 }

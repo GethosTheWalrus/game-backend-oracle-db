@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import express from 'express';
 import { getScoresForUsers, insertNewScoreForUser, insertNewUser } from '../services/oracleDB.service'
-import { timeLog } from '../middleware/logger.middleware';
 import { validateEndpointInput } from '../middleware/validator.middleware';
 import { Player, PlayerScoresValue } from '../models/scores.type';
 import { ROOT_URL } from '../environment/environment';
@@ -9,17 +8,14 @@ import { ROOT_URL } from '../environment/environment';
 export const playersRouter = express.Router();
 
 // connect middlewares to router
-playersRouter.use(timeLog);
 playersRouter.use(validateEndpointInput);
 
-/* View all registerred users
- * output: Player[]
-*/
 playersRouter.route('/users')
     /* 
      * List all registerred users
+     * output: Player[]
     */
-    .get( async function(req: Request, res: Response ) {
+    .get( async (req: Request, res: Response) => {
         let scores = await getScoresForUsers();
         res.send(scores);
     })
@@ -28,7 +24,7 @@ playersRouter.route('/users')
      * input: Player (username only)
      * output: Player[]
     */
-    .post( async (req: Request, res: Response ) => {
+    .post( async (req: Request, res: Response) => {
         let newUser: Player = req.body;
         let newUserId: number = await insertNewUser(newUser.username);
         res.location(ROOT_URL + '/users/' + newUserId).status(201).end();
@@ -39,7 +35,7 @@ playersRouter.route('/users/:user')
      * View a selected registerred user
      * output: Player[]
     */
-    .get( async (req: Request, res: Response ) => {
+    .get( async (req: Request, res: Response) => {
         let userId = req.params.user as string;
         let userIdNumber = parseInt(userId!) || -1;
         let scores = await getScoresForUsers(userIdNumber);
@@ -52,7 +48,7 @@ playersRouter.route('/users/:user')
      * input: PlayerScoresValues[]
      * output: Player[]
     */
-    .post( async (req: Request, res: Response ) => {
+    .post( async (req: Request, res: Response) => {
         let userId = req.params.user as string;
         let userIdNumber = parseInt(userId!) || -1;
         let newScores = req.body;

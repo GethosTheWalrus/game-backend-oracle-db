@@ -1,5 +1,5 @@
 <!DOCTYPE html>  
-<html style="margin:0;margin-top:100px;">
+<html style="margin-top:25px;">
 
 <head> 
 
@@ -8,6 +8,10 @@
     <title> Flappy Bird </title>
     <script type="text/javascript" src="phaser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tensorflow/0.15.0/tf.min.js"></script>
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="chat.script.js"></script>
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.4.0/css/all.css">
+    <link rel="stylesheet" href="chat.style.css" />
 
     <!-- Game Object js files -->
     <script src="./Objects/GameObject.js"></script>
@@ -35,31 +39,49 @@
             width: 100px;
             border-radius: 7px;
         }
+        #chatContainer {
+            background: white;
+            width: 400px;
+            height: 200px;
+            margin: 0 auto;
+            text-align: left;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        #sendMessage {
+            padding: 5px;
+            width: 400px;
+        }
+        .chatItem {
+            display: block;
+            flex-basis: 100%;
+            align-self: flex-end;
+        }
     </style>
 
-    <script type="text/javascript">
+    <script>
         async function addUser() {
-            let username = prompt("Please enter your username", "");
-            let text;
-            if (username == null || username == "") {
-                text = "User cancelled the prompt.";
-            } else {
-                // create the request to add a new player
-                let newPlayerPromise = await fetch('http://localhost:3000/users', {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json; charset=utf-8',
-                        'Content-Type': 'application/json; charset=utf-8'
-                    },
-                    body: JSON.stringify({username: username})
-                }).then( (data) => {
-                    // read response headers and body here
-                    // since this demo is using CORS, we cannot
-                    // read the location response header
-                    window.location.reload();
-                });
-            }
+        let username = prompt("Please enter your username", "");
+        let text;
+        if (username == null || username == "") {
+            text = "User cancelled the prompt.";
+        } else {
+            // create the request to add a new player
+            let newPlayerPromise = await fetch('http://localhost:3000/users', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json; charset=utf-8',
+                    'Content-Type': 'application/json; charset=utf-8'
+                },
+                body: JSON.stringify({username: username})
+            }).then( (data) => {
+                // read response headers and body here
+                // since this demo is using CORS, we cannot
+                // read the location response header
+                window.location.reload();
+            });
         }
+    }
     </script>
     
 </head>
@@ -70,6 +92,12 @@
         <select id="playerSelector">
         </select>
         <button id="addUser" onclick="addUser();">New User</button>
+    </div>
+    <div class="msg-panel"></div>
+        <div class="dock">
+        <button id="clear" class="messageWindow"><i class="fa-light fa-broom-wide"></i></button>
+        <input type="text" id="newMessage" placeholder="Send a message..." class="messageWindow"></input>
+        <button id="submit" class="messageWindow" disabled><i class="fa-light fa-paper-plane-top"></i></button>
     </div>
 </body>  
 
