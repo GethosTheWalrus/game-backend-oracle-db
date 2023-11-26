@@ -1,0 +1,1 @@
+CREATE PLUGGABLE DATABASE FREEPDB2 ADMIN USER pdbadm IDENTIFIED BY password FILE_NAME_CONVERT=('/opt/oracle/oradata/FREE/pdbseed','/opt/oracle/oradata/FREE/FREEPDB2');
