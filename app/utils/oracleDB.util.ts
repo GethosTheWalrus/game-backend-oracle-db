@@ -15,7 +15,7 @@ export async function openConnection(): Promise<oracledb.Connection> {
             });
         }
     } catch (err) {
-        // console.error(err);
+        console.error(err);
     } finally {
         return connection as oracledb.Connection;
     }
@@ -55,7 +55,7 @@ export async function checkDBHealth(): Promise<boolean> {
         await rs!.close();
     } catch (err) {
         logMessageSomewhere('awaiting DB health checks...');
-        logMessageSomewhere(err);
+        // logMessageSomewhere(err);
     } finally {
         if (connection) {
             closeConnection(connection);
