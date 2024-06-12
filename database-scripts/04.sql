@@ -16,3 +16,4 @@ ALTER SESSION SET CONTAINER=FREEPDB1;
                ]}
 from USERS u with insert update delete
 ;
+EXIT;
