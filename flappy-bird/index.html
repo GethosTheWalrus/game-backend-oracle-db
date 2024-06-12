@@ -67,7 +67,7 @@
             text = "User cancelled the prompt.";
         } else {
             // create the request to add a new player
-            let newPlayerPromise = await fetch('http://localhost:3000/users', {
+            let newPlayerPromise = await fetch('http://'+process.env.BACKENDURL+'/users', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json; charset=utf-8',

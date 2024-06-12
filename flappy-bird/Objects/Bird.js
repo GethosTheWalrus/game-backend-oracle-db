@@ -72,7 +72,7 @@ class Bird extends GameObject {
         let message = { user: selectedPlayer, messageText: 'Just scored ' + score + ' points!', type: 'scoreUpdate' }
         socket.emit('chat', message);
 
-        fetch('http://localhost:3000/users/'+selectedPlayer+'/scores', {
+        fetch('http://'+process.env.BACKENDURL+'/users/'+selectedPlayer+'/scores', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json; charset=utf-8',

@@ -14,7 +14,7 @@ class Menu extends Phaser.Scene {
         // get players from the server
         let playerSelector = document.querySelector('#playerSelector');
         console.log('getting players');
-        let playersPromise = await fetch('http://localhost:3000/users');
+        let playersPromise = await fetch('http://'+process.env.BACKENDURL+'/users');
         playersPromise.json().then( (data) => {
             this.players = data;
             if (playerSelector.childNodes.length < 2) {

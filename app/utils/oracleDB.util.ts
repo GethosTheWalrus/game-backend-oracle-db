@@ -1,11 +1,19 @@
 import oracledb from 'oracledb';
-import { DB_USER, DB_PASSWORD, DB_ADDRESS, DB_PORT, DB_SERVICE } from '../environment/environment';
+import { DB_USER, DB_PASSWORD, DB_ADDRESS, DB_PORT, DB_SERVICE, CONNECTION_STRING } from '../environment/environment';
 import { logMessageSomewhere } from './logger.util';
 
 export async function openConnection(): Promise<oracledb.Connection> {
     let connection;
     try {
-        connection = await oracledb.getConnection({ user: DB_USER, password: DB_PASSWORD, connectionString: DB_ADDRESS+":"+DB_PORT+"/"+DB_SERVICE });
+        if (CONNECTION_STRING == "localhost") {
+            connection = await oracledb.getConnection({ user: DB_USER, password: DB_PASSWORD, connectionString: DB_ADDRESS+":"+DB_PORT+"/"+DB_SERVICE });
+        } else {
+            connection = await oracledb.getConnection({
+                user          : DB_USER,
+                password      : DB_PASSWORD,  
+                connectString : CONNECTION_STRING
+            });
+        }
     } catch (err) {
         // console.error(err);
     } finally {

@@ -8,3 +8,4 @@ export const ROOT_URL: string = process.env.SITEURL || 'localhost:3000';
 export const QUEUE_NAME: string = process.env.QUEUE_NAME || 'GAMEDB.GAME_CHAT_QUEUE';
 export const CHAT_POLL_INTERVAL: number = Number(process.env.CHAT_POLL_INTERVAL) || 1000;
 export const CHAT_POLL_MESSAGE_COUNT: number = Number(process.env.CHAT_POLL_MESSAGE_COUNT) || 5;
+export const CONNECTION_STRING: string = process.env.ORACLEDB_CONNECTION_STRING || "localhost";

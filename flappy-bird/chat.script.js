@@ -1,4 +1,4 @@
-const socket = io("http://localhost:3000");
+const socket = io("http://"+process.env.BACKENDURL+":3000");
 
 function sendMessage(messageText) {
   let sendingUser = document.querySelector('#playerSelector').value;
