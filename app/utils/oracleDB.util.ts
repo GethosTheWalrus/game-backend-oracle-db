@@ -55,7 +55,7 @@ export async function checkDBHealth(): Promise<boolean> {
         await rs!.close();
     } catch (err) {
         logMessageSomewhere('awaiting DB health checks...');
-        // logMessageSomewhere(err);
+        logMessageSomewhere(err);
     } finally {
         if (connection) {
             closeConnection(connection);
