@@ -1,0 +1,22 @@
+# Authentication
+tenancy_ocid         = "OCID of your tenandcy"
+user_ocid            = "OCID of the your user"
+private_key_path     = "path to your private key"
+
+# Region
+region = "your preferred region"
+
+# Compartment
+compartment_id = "OCID of your parent compartment for this demo"
+
+# Instance
+my_ssh_public_keys = [
+    "your public SSH keys (string, not path to file)"
+]
+
+my_private_key_path = "path to your private key"
+
+availability_domain = "your preferred availability domain (with prefix)"
+
+# Database
+my_public_ip =  "your current public IP"

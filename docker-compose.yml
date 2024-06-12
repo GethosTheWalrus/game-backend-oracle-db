@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     environment:
       - ORACLE_ALLOW_REMOTE=true
-      - ORACLE_PWD=password
+      - ORACLE_PWD=MySecurePassword123
     ports: 
       - '1521:1521'
     volumes:
@@ -26,7 +26,7 @@ services:
       - ORACLEDB_PORT=1521
       - ORACLEDB_SERVICE=FREEPDB1
       - ORACLEDB_USER=GAMEDB
-      - DB_PASSWORD=password
+      - DB_PASSWORD=MySecurePassword123
       - SITEURL=localhost:3000
       - CHAT_POLL_INTERVAL=5000
       - CHAT_POLL_MESSAGE_COUNT=5
