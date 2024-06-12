@@ -56,7 +56,7 @@ resource "null_resource" "the_instance" {
     inline = [
       # "echo \"${oci_database_autonomous_database.demo_database.connection_strings[0].profiles[2].value}\""
       # "export ORACLEDB_CONNECTION_STRING=\"${oci_database_autonomous_database.demo_database.connection_strings[0].profiles[2].value}\" && sudo sh ~/dbinit"
-      "echo '#!/bin/bash\napt update\napt install -y libaio1 libaio-dev\nfor filename in /home/ubuntu/game-backend-oracle-db/database-scripts/*.sql; do\n./sqlplus \"ADMIN\"/\"MySecurePassword123\"@\"${oci_database_autonomous_database.demo_database.connection_strings[0].profiles[2].value}\" @ \"$filename\"\ndone' > ~/dbinit && chmod 755 dbinit && sudo sh dbinit"
+      "echo '#!/bin/bash\napt update\napt install -y libaio1 libaio-dev\nfor filename in /home/ubuntu/game-backend-oracle-db/database-scripts/*.sql; do\necho @$filename | ./sqlplus \"ADMIN\"/\"MySecurePassword123\"@\"${oci_database_autonomous_database.demo_database.connection_strings[0].profiles[2].value}\"\ndone' > ~/dbinit && chmod 755 dbinit && sudo sh dbinit"
     ]
   }
 }

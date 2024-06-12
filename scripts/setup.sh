@@ -25,7 +25,7 @@ wget https://download.oracle.com/otn_software/linux/instantclient/2340000/instan
 unzip sqlplus.zip -d sqlplusfolder
 rm sqlplus.zip 
 
-git clone https://github.com/GethosTheWalrus/game-backend-oracle-db.git
+git clone -b oci-deploy https://github.com/GethosTheWalrus/game-backend-oracle-db.git
 
 cd ~/game-backend-oracle-db/app
 sudo docker build -t flappybird-backend .

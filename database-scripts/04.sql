@@ -7,8 +7,7 @@ ALTER SESSION SET CONTAINER=FREEPDB1;
 --------------------------------------------------------
 
   CREATE OR REPLACE FORCE EDITIONABLE JSON RELATIONAL DUALITY VIEW "GAMEDB"."PLAYER_SCORES"  AS 
-  select json {'username' : u.USERNAME,
-             'id'   : u.ID,
+  select json {'_id' : u.ID, 'username' : u.USERNAME,
              'scores' :
                [ select json {'id' : s.ID, 'value' : s.VALUE}
                  from   SCORES s with insert update delete
@@ -16,4 +15,3 @@ ALTER SESSION SET CONTAINER=FREEPDB1;
                ]}
 from USERS u with insert update delete
 ;
-EXIT;
