@@ -3,7 +3,7 @@ resource "docker_container" "flappybird" {
     image = "flappybird-backend"
     name = "flappybird-backend"
     hostname = "flappybird-backend"
-    env = ["ORACLEDB_CONNECTION_STRING=${var.db_connection_string}"]
+    env = ["ORACLEDB_CONNECTION_STRING=${var.db_connection_string}", "ORACLEDB_USER=ADMIN", "ORACLEDB_PASSWORD=MySecurePassword123"]
     restart = "always"
     must_run = "true"
     depends_on = [var.db_connection_string]

@@ -84,6 +84,17 @@ resource "oci_core_security_list" "the_security_list" {
     }
   }
 
+  ingress_security_rules {
+    protocol    = 6
+    source_type = "CIDR_BLOCK"
+    source      = "${var.my_public_ip}/32"
+    description = "access to instance port 3000 from home"
+    tcp_options {
+        min = 3000
+        max = 3000
+    }
+  }
+
   egress_security_rules {
     protocol         = 6
     destination_type = "CIDR_BLOCK"
