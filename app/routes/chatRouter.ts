@@ -16,6 +16,7 @@ chatRouter.route('/chat')
     */
     .post( async (req: Request, res: Response) => {
         let newMessage: ChatMessage = req.body;
+        console.log(newMessage);
         let enqueuedMessage: ChatMessage = await enqueueOne(newMessage);
         res.status(202).send(enqueuedMessage);
     });

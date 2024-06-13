@@ -37,7 +37,7 @@ export async function enqueueOne(message: ChatMessage) {
         );
         enqueuedMessage = result.outBinds!.returnValue;
     } catch(e) {
-        logMessageSomewhere(e);
+        logMessageSomewhere("enqueueOne: " + e);
     } finally {
         if (connection) {
             closeConnection(connection);
@@ -55,7 +55,7 @@ export async function dequeueOne(): Promise<ChatMessage[]> {
         if (dequeuedMessage.user && dequeuedMessage.messageText) 
             dequeuedMessages.push( dequeuedMessage );
     } catch(e) {
-        logMessageSomewhere(e);
+        logMessageSomewhere("dequeueOne: " + e);
     } finally {
         if (connection) {
             closeConnection(connection);
@@ -75,7 +75,7 @@ export async function dequeueMany(numMessages: number): Promise<ChatMessage[]> {
                 dequeuedMessages.push( dequeuedMessage );
         }
     } catch(e) {
-        logMessageSomewhere(e);
+        logMessageSomewhere("dequeueMany: " + e);
     } finally {
         if (connection) {
             closeConnection(connection);

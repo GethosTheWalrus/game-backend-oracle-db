@@ -58,3 +58,5 @@ BEGIN
     return msg_text;
 END DEQUEUEMESSAGE;
 /
+
+EXIT;

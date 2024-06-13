@@ -34,7 +34,7 @@ export async function insertNewUser(username: string): Promise<number> {
         );
         newUserId = result.outBinds!.newUserId[0];
     } catch(err) {
-        logMessageSomewhere(err);
+        logMessageSomewhere("insertNewUser: " + err);
     } finally {
         if (connection) {
             closeConnection(connection);
@@ -81,7 +81,7 @@ export async function insertNewScoreForUser(userId: number, score: number) {
             }
         );
     } catch(err) {
-        logMessageSomewhere(err);
+        logMessageSomewhere("insertNewScoreForUser: " + err);
     } finally {
         if (connection) {
             closeConnection(connection);
@@ -107,7 +107,7 @@ export async function getScoresForUsers(userId?: number): Promise<Player[]> {
             [],
             [
                 {
-                    key: 't.data.id', 
+                    key: 't.data.\"_id\"', 
                     paramName: 'userId', 
                     type: '', 
                     operator: '=', 
