@@ -30,8 +30,8 @@ git clone -b oci-deploy https://github.com/GethosTheWalrus/game-backend-oracle-d
 cd ~/game-backend-oracle-db/app
 sudo docker build -t flappybird-backend .
 
-cd ~/game-backend-oracle-db/webserver
-sudo docker build -t flappybird-frontend .
+# cd ~/game-backend-oracle-db/webserver
+# sudo docker build -t flappybird-frontend .
 
 mkdir ~/instantclient
 cp -r ~/basicfolder/instantclient_23_4/. ~/instantclient/

@@ -1,5 +1,5 @@
 resource "docker_container" "backend" {
-    image = "flappybird-frontend"
+    image = "nginx:alpine"
     name = "flappybird-frontend"
     hostname = "flappybird-front-end"
     env = ["BACKENDURL=${var.compute_instance_ip}:3000"]
@@ -10,5 +10,9 @@ resource "docker_container" "backend" {
         internal = 80
         external = 80
         ip       = "0.0.0.0"
+    }
+    volumes {
+        container_path = "/usr/share/nginx/html"
+        host_path      = "/home/ubuntu/game-backend-oracle-db/flappy-bird"
     }
 }
