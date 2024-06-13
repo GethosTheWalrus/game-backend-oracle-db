@@ -107,7 +107,7 @@ export async function getScoresForUsers(userId?: number): Promise<Player[]> {
             [],
             [
                 {
-                    key: 't.data.id', 
+                    key: 't.data.\"_id\"', 
                     paramName: 'userId', 
                     type: '', 
                     operator: '=', 
