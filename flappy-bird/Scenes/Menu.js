@@ -22,7 +22,7 @@ class Menu extends Phaser.Scene {
                 self.players = data;
                 data.forEach( (item) => {
                     let playerOption = document.createElement('option');
-                    playerOption.setAttribute('value', item.id);
+                    playerOption.setAttribute('value', item._id);
                     playerOption.innerHTML = item.username;
                     playerSelector.appendChild(playerOption);
                 });

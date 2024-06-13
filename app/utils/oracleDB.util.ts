@@ -16,7 +16,6 @@ export async function openConnection(): Promise<oracledb.Connection> {
         }
     } catch (err) {
         console.error(err);
-        console.log("connection string: ", CONNECTION_STRING);
     } finally {
         return connection as oracledb.Connection;
     }

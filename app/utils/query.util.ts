@@ -71,6 +71,5 @@ export function simpleSQLBuilder(
         }
     } 
 
-    console.log(query)
     return query
 }
