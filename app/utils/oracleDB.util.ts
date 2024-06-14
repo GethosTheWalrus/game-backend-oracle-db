@@ -11,7 +11,7 @@ export async function openConnection(): Promise<oracledb.Connection> {
             connection = await oracledb.getConnection({
                 user          : DB_USER,
                 password      : DB_PASSWORD,  
-                connectString : DB_ADDRESS+":"+DB_PORT+"/"+DB_SERVICE
+                connectString : CONNECTION_STRING
             });
         }
     } catch (err) {
